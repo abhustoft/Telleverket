@@ -1,0 +1,3 @@
+function dryRun() {
+  return false;
+}
