@@ -1,0 +1,9 @@
+/node_modules
+/.idea
+package-lock.json
+yarn.lock
+# git-secret
+secrets.js
+.clasp.json
+.gitsecret/keys/random_seed
+!*.secret
