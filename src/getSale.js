@@ -4,6 +4,7 @@ const getSale = (products, index) => {
     const decrement = products.quantities[index] ? products.quantities[index] : '0';
     const size = products.sizes[index] ? products.sizes[index] : 'none';
     const name = products.names[index] ? products.names[index]: 'none';
+    const ean = products.eans[index] ? products.eans[index]: 'none';
     let soldColor = '';
     // if (products.names[index] === 'wheat') {
     //     // TODO: Remove preceding digits for Wheat 2020Q34
@@ -18,6 +19,7 @@ const getSale = (products, index) => {
         soldColor: soldColor,
         decrement: decrement,
         size: size,
+        ean: ean,
         name: name
     };
 }

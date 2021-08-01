@@ -126,7 +126,14 @@ function processEmails() {
                 error = false,
                 unprocessed = false,
                 found = true,
-                message = '\n\n' + sale.vendor + ':  ' + sale.name + '  ----     Solgt: ' + Math.trunc(sale.decrement) + '\nId: "' + handle + ', farge: ' + sale.soldColor + ', størrelse: ' + sale.size,
+                message = '\n\n' + 
+                    sale.vendor + ':  ' + 
+                    sale.name + 
+                    '  ----     Solgt: ' + Math.trunc(sale.decrement) + 
+                    '\nId: "' + handle + 
+                    ', farge: ' + sale.soldColor + 
+                    ', størrelse: ' + sale.size +
+                    ' EAN: ' + sale.ean,
                 price = Number.parseFloat(columns.prices[index] ? columns.prices[index]: '0.0',10).toFixed(),
                 result = '',
                 shop = columns.shops[index],

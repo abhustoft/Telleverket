@@ -28,12 +28,14 @@ function sendResults(results, attachedFile) {
         }
     })
     
-    const foundAndOK = results.filter(item => item.foundInShopify && !item.error && !item.unprocessed);
+    const foundAndOK = results.filter(item => 
+        item.foundInShopify && !item.error && !item.unprocessed);
     const notFound = results.filter(item => !item.foundInShopify);
     const unprocessed = results.filter(item => item.unprocessed && !item.error);
 
     const errors = results.filter(item => {
-        if (item.error) {
+        // Found in Shopify, but some other error occurred
+        if (item.error && item.foundInShopify) {
             return item.message;
         } else {
             return false;
@@ -80,11 +82,11 @@ function sendResults(results, attachedFile) {
     }).format(sumStoro)}`;
     body = body + ok;
 
-    body = body + "\n\n******* Hadde nedtelling 0 ***************\n";
+    body = body + "\n\n******* Hadde nedtelling 0 (Feilslag i kassen) ***************\n";
     body = body + unprocessedTexts;
     body = body + "\n\n******* Kunne ikke finne disse i Shopify ***************\n";
     body = body + missing;
-    body = body + "\n********** De som feilet ****************\n";
+    body = body + "\n**********Andre feil ****************\n";
     body = body + notOk;
 
     MailApp.sendEmail({

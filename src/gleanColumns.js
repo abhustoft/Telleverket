@@ -8,6 +8,7 @@
 function gleanColumns(fileDataResponse) {
     let decrementValues = []
     let handleValues = [];
+    let eanValues = [];
     let nameValues = [];
     let priceValues = []
     let shopValues = []
@@ -28,6 +29,7 @@ function gleanColumns(fileDataResponse) {
         decrementValues = Sheets.Spreadsheets.Values.get(fileDataResponse.id, "H1:H");
         handleValues = Sheets.Spreadsheets.Values.get(fileDataResponse.id, "G1:G");
         nameValues = Sheets.Spreadsheets.Values.get(fileDataResponse.id, "B1:B");
+        eanValues = Sheets.Spreadsheets.Values.get(fileDataResponse.id, "C1:C");
         priceValues = Sheets.Spreadsheets.Values.get(fileDataResponse.id, "I1:I");
         shopValues = Sheets.Spreadsheets.Values.get(fileDataResponse.id, "A1:A");
         vendorValues = Sheets.Spreadsheets.Values.get(fileDataResponse.id, "F1:F");
@@ -45,6 +47,7 @@ function gleanColumns(fileDataResponse) {
 
     const rawDecrements = decrementValues.values.map(decrement => decrement[0]);
     const rawNames      = nameValues.values.map(name => name[0]);
+    const rawEANs      = eanValues.values.map(ean => ean[0]);
     const rawPrices     = priceValues.values.map(price => price[0]);
     const rawShops      = shopValues.values.map(shop => shop[0]);
     const rawVendors    = vendorValues.values.map(vendor => vendor[0]);
@@ -66,6 +69,7 @@ function gleanColumns(fileDataResponse) {
 
     const decrements = rawDecrements.slice(firstHandle);
     const names = rawNames.slice(firstHandle);
+    const eans = rawEANs.slice(firstHandle);
     const prices = rawPrices.slice(firstHandle);
     const shops = rawShops.slice(firstHandle);
     const vendors = rawVendors.slice(firstHandle);
@@ -74,6 +78,7 @@ function gleanColumns(fileDataResponse) {
         colors: colors,
         handles: cleanedHandles,
         names: names,
+        eans: eans,
         prices: prices,
         quantities: decrements,
         shops: shops,
