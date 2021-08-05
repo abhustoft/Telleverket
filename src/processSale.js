@@ -12,26 +12,28 @@ function processSale(location_id, handle, size, color, decrement, mailItem) {
 
     startCall = Date.now();
     const matchedVariant = getItemVariants(product_id, handle, size, color, decrement, mailItem);
+    
     finishedCall = Date.now();
-    sleepTime = msBetweenCalls - (finishedCall - startCall)
+    sleepTime = msBetweenCalls - (finishedCall - startCall);
+
     if (sleepTime > 0) {
         Utilities.sleep(sleepTime);
     }
 
-    if (matchedVariant.error) {
-        mailItem.result = matchedVariant.error;
-        mailItem.error = true;
-        mailItem.foundInShopify = true;
+    if (mailItem.error) {
         return mailItem;
     }
 
     startCall = Date.now();
     let remaining = null;
+    
     if (!dryRun()) {
       remaining = decrementInventory(location_id, matchedVariant.id, matchedVariant.decrement);
     }
+
     finishedCall = Date.now();
     sleepTime = msBetweenCalls - (finishedCall - startCall)
+
     if (sleepTime > 0) {
         Utilities.sleep(sleepTime);
     }

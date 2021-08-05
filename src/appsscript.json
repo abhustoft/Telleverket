@@ -24,18 +24,19 @@
     }]
   },
   "exceptionLogging": "STACKDRIVER",
-  "oauthScopes": [
-                  "https://www.googleapis.com/auth/drive.scripts",
-                  "https://www.googleapis.com/auth/script.projects",
-                  "https://www.googleapis.com/auth/script.external_request", 
-                  "https://www.googleapis.com/auth/drive", 
-                  "https://www.googleapis.com/auth/spreadsheets.currentonly", 
-                  "https://www.googleapis.com/auth/spreadsheets", 
-                  "https://www.googleapis.com/auth/gmail.labels",
-                  "https://www.googleapis.com/auth/gmail.readonly",
-                  "https://www.googleapis.com/auth/userinfo.email",
-                  "https://www.googleapis.com/auth/firebase.database",
-                  "https://mail.google.com/",
-                  "https://www.googleapis.com/auth/script.send_mail"],
+  "oauthScopes": [          
+    "https://www.googleapis.com/auth/script.scriptapp",
+    "https://www.googleapis.com/auth/script.projects",
+    "https://www.googleapis.com/auth/script.external_request",
+    "https://www.googleapis.com/auth/drive",  
+    "https://www.googleapis.com/auth/drive.scripts",
+    "https://www.googleapis.com/auth/spreadsheets.currentonly", 
+    "https://www.googleapis.com/auth/spreadsheets", 
+    "https://www.googleapis.com/auth/gmail.labels",
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/firebase.database",
+    "https://mail.google.com/",
+    "https://www.googleapis.com/auth/script.send_mail"],
   "runtimeVersion": "V8"
 }

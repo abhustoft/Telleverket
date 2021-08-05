@@ -30,7 +30,6 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
         mailItem.error = false;
 
         matchedVariant = {
-            error: 'Fant ikke denne i Shopify.',
             title: '',
             id: '',
             handle: '',
@@ -39,6 +38,9 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
             decrement: ''
         };
         return matchedVariant;
+    } else {
+        mailItem.error = false;
+        mailItem.foundInShopify = true;
     }
 
     const getVariants = `https://juniorbarneklar.myshopify.com/admin/api/2020-07/products/${product_id}/variants.json?fields=inventory_item_id,title,inventory_quantity, option1, option2`;
@@ -58,8 +60,6 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
         mailItem.result = 'Kunne ikke finne varianter for handle';
         mailItem.foundInShopify = true;
         mailItem.error = true;
-
-        matchedVariant = {error: 'Kunne ikke finne varianter for handle'};
         console.log('Kunne ikke finne varianter for handle');
         return matchedVariant;
     }
@@ -67,8 +67,6 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
         mailItem.result = 'Variant feil:' + theHandles + '  for handle ' + handle;
         mailItem.foundInShopify = true;
         mailItem.error = true;
-
-        matchedVariant = {error: 'Variant error: ' + theHandles + '  for handle ' + handle};
         console.log('Variant error: ', theHandles, '  for handle ', handle);
         return matchedVariant;
     }
@@ -76,7 +74,7 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
     console.log('Product Id ', product_id, ' has ', theHandles.variants.length, ' variants');
     console.log('Looking for sold item with size ', size, ' and color ', color, ' Decrement by: ', decrement);
 
-    theHandles.variants.forEach((variant, index) => {
+    theHandles.variants.every((variant, index) => {
         const regex = /\s/gi
         const variantSize = variant.option1.toLowerCase().replace(regex, '');
         let variantColor = 'No color found';
@@ -84,26 +82,34 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
         if (variant.option2) {
             variantColor = variant.option2.toLowerCase().replace(regex, '');
         } else {
+            mailItem.result = 'Variant error: the variant', variant, '  has no color ';
+            mailItem.foundInShopify = true;
+            mailItem.error = true;
             console.log('Variant error: the variant', variant, '  has no color ');
+            return true;
         }
 
         if (variantSize === size && variantColor === color) {
             // Found the variant in Shopify!
+            mailItem.result = `MATCH variant no ${index}: Size ${variantSize} and color ${variantColor}`;
+            mailItem.foundInShopify = true;
+            mailItem.error = false;
             matchedVariant = {
                 title: variant.title,
                 id: variant.inventory_item_id,
                 handle: handle,
                 size: size,
                 color: color,
-                decrement: decrement
+                decrement: decrement,
             };
             console.log('MATCH variant no', index, ': Size', variantSize, ' and color ', variantColor);
-            return matchedVariant;
+            return false;
         } else {
             console.log('No match for variant no ', index, ': Size', variantSize, ' and color ', variantColor);
         }
+        return true;
 
-    })
+    });
 
     if (!matchedVariant.title) {
         console.log('Could not find any match for:', theHandles);
@@ -112,7 +118,6 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
             titles = theHandles.variants.reduce((accumulator, currentValue) => `    ${accumulator}\n    ${currentValue.title}`, '')
         }
         matchedVariant = {
-            error: 'Fant denne i Shopify, men fant ingen varianter for: ' + titles,
             id: '',
             handle: '',
             size: '',
