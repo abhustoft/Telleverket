@@ -23,26 +23,6 @@ const getProductId = handle => {
 
 const getItemVariants = (product_id, handle, size, color, decrement, mailItem) => {
     let matchedVariant = {};
-
-    if (!product_id) {
-        mailItem.result = 'Fant ikke denne i Shopify.';
-        mailItem.foundInShopify = false;
-        mailItem.error = false;
-
-        matchedVariant = {
-            title: '',
-            id: '',
-            handle: '',
-            size: '',
-            color: '',
-            decrement: ''
-        };
-        return matchedVariant;
-    } else {
-        mailItem.error = false;
-        mailItem.foundInShopify = true;
-    }
-
     const getVariants = `https://juniorbarneklar.myshopify.com/admin/api/2020-07/products/${product_id}/variants.json?fields=inventory_item_id,title,inventory_quantity, option1, option2`;
 
     const response = UrlFetchApp.fetch(getVariants, {
@@ -58,14 +38,12 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
     const theHandles = JSON.parse(response.getContentText());
     if (!theHandles) {
         mailItem.result = 'Kunne ikke finne varianter for handle';
-        mailItem.foundInShopify = true;
         mailItem.error = true;
         console.log('Kunne ikke finne varianter for handle');
         return matchedVariant;
     }
     if (theHandles.errors) {
         mailItem.result = 'Variant feil:' + theHandles + '  for handle ' + handle;
-        mailItem.foundInShopify = true;
         mailItem.error = true;
         console.log('Variant error: ', theHandles, '  for handle ', handle);
         return matchedVariant;
@@ -83,7 +61,6 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
             variantColor = variant.option2.toLowerCase().replace(regex, '');
         } else {
             mailItem.result = 'Variant error: the variant', variant, '  has no color ';
-            mailItem.foundInShopify = true;
             mailItem.error = true;
             console.log('Variant error: the variant', variant, '  has no color ');
             return true;
@@ -92,7 +69,6 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
         if (variantSize === size && variantColor === color) {
             // Found the variant in Shopify!
             mailItem.result = `MATCH variant no ${index}: Size ${variantSize} and color ${variantColor}`;
-            mailItem.foundInShopify = true;
             mailItem.error = false;
             matchedVariant = {
                 title: variant.title,
@@ -108,7 +84,6 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
             console.log('No match for variant no ', index, ': Size', variantSize, ' and color ', variantColor);
         }
         return true;
-
     });
 
     if (!matchedVariant.title) {
@@ -126,7 +101,6 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
         };
 
         mailItem.result = 'Fant denne i Shopify, men fant ingen varianter for: ' + titles;
-        mailItem.foundInShopify = true;
         mailItem.error = true;
     }
     return matchedVariant;

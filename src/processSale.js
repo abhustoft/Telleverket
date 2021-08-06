@@ -3,6 +3,16 @@ function processSale(location_id, handle, size, color, decrement, mailItem) {
 
     let startCall = Date.now();
     const product_id = getProductId(handle);
+    
+    if (product_id === null) {
+        mailItem.result = 'Fant ikke denne i Shopify.';
+        mailItem.foundInShopify = false;
+        mailItem.error = false;
+        return mailItem;
+    } else {
+        mailItem.foundInShopify = true;
+    }
+
     let finishedCall = Date.now();
 
     let sleepTime = msBetweenCalls - (finishedCall - startCall)

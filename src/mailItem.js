@@ -3,7 +3,7 @@ function MailItem(
     decrement = 0,
     error = false,
     unprocessed = false,
-    found = true,
+    foundInShopify = false,
     message = '',
     price = 0,
     result = '',
@@ -14,7 +14,7 @@ function MailItem(
   this.decrement = decrement;
   this.error = error;
   this.unprocessed = unprocessed;
-  this.foundInShopify = found;
+  this.foundInShopify = foundInShopify;
   this.message = message;
   this.price = price;
   this.result = result;

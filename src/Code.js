@@ -123,9 +123,6 @@ function processEmails() {
             const mailItem = new MailItem(
                 date = Math.floor(Date.now() / 1000) - 60 * 60 * 24, //Yesterday's sale, sec since 1970
                 decrement = Number.parseFloat(sale.decrement,10).toFixed(),
-                error = false,
-                unprocessed = false,
-                found = true,
                 message = '\n\n' + 
                     sale.vendor + ':  ' + 
                     sale.name + 
@@ -135,7 +132,6 @@ function processEmails() {
                     ', størrelse: ' + sale.size +
                     ' EAN: ' + sale.ean,
                 price = Number.parseFloat(columns.prices[index] ? columns.prices[index]: '0.0',10).toFixed(),
-                result = '',
                 shop = columns.shops[index],
                 vendor = sale.vendor,
             );
