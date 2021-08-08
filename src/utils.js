@@ -17,6 +17,7 @@ const getProductId = handle => {
         return null;
     } else {
         console.log("Product Id for handle: ", handle, ' is ', product.products[0].id);
+        console.group();
         return product.products[0].id;
     }
 }
@@ -51,6 +52,7 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
 
     console.log('Product Id ', product_id, ' has ', theHandles.variants.length, ' variants');
     console.log('Looking for sold item with size ', size, ' and color ', color, ' Decrement by: ', decrement);
+    console.group();
 
     theHandles.variants.every((variant, index) => {
         const regex = /\s/gi
@@ -104,5 +106,7 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
         mailItem.result = 'Fant denne i Shopify, men fant ingen varianter for: ' + titles;
         mailItem.error = true;
     }
+    
+    console.groupEnd();
     return matchedVariant;
 }

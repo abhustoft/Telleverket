@@ -60,6 +60,7 @@ function processSale(location_id, handle, size, color, decrement, mailItem) {
         mailItem.foundInShopify = true;
         mailItem.error = false;
     }
+    console.groupEnd();
     return mailItem;
 }
 
