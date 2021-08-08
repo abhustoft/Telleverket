@@ -6,7 +6,7 @@
   "scripts": {
     "login": "clasp login",
     "prettier": "prettier  --write \"src/**/*.js\"",
-    "push": "dscc-scripts connector push_changes",
+    "pushtogoogle": "dscc-scripts connector push_changes",
     "watch": "dscc-scripts connector watch_changes",
     "open": "dscc-scripts connector open_script",
     "open_template": "dscc-scripts connector open_template",

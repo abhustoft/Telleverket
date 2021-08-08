@@ -70,6 +70,7 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
             // Found the variant in Shopify!
             mailItem.result = `MATCH variant no ${index}: Size ${variantSize} and color ${variantColor}`;
             mailItem.error = false;
+            mailItem.foundInShopify = true;
             matchedVariant = {
                 title: variant.title,
                 id: variant.inventory_item_id,
