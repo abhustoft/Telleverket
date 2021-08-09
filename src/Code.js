@@ -26,19 +26,19 @@ function processEmails() {
     const emailQuotaRemaining = MailApp.getRemainingDailyQuota();
     if (emailQuotaRemaining < 9) {
         console.log(`Email quota remaining is ${emailQuotaRemaining}, so skip this run.`);
-        const mailItem = new MailItem(
-            'I dag',
-            0,
-            true,
-            true,
-            0,
-            '',
-            `Email er nede på ${emailQuotaRemaining}, så vil ikke kjøre nå.`,
-            '',
-            '',
-            ''
-        );
-        sendResults([mailItem], excelFile.getName());
+        const mailItem1 = new MailItem();
+        mailItem1.date = 'I dag';
+        mailItem1.decrement = 0;
+        mailItem1.error = true;
+        mailItem1.processed = true;
+        mailItem1.foundInShopify  = true;
+        mailItem1.message = `Email er nede på ${emailQuotaRemaining}, så vil ikke kjøre nå.`;
+        mailItem1.price = '';
+        mailItem1.result = '';
+        mailItem1.shop = '';
+        mailItem1.vendor = '';
+
+        sendResults([mailItem1], excelFile.getName());
         return;
     }
     const results = [];
@@ -46,19 +46,18 @@ function processEmails() {
     Utilities.sleep(600);
 
     if (location_id.error) {
-        const mailItem = new MailItem(
-            'I dag',
-            0,
-            true,
-            true,
-            0,
-            `getLocationId feilet: ${location_id.error}`,
-            0,
-            '',
-            '',
-            ''
-        );
-        sendResults([mailItem], excelFile.getName());
+        const mailItem2 = new MailItem();
+        mailItem2.date = 'I dag';
+        mailItem2.decrement = 0;
+        mailItem2.error = true;
+        mailItem2.processed = true;
+        mailItem2.foundInShopify  = true;
+        mailItem2.message = `getLocationId feilet: ${location_id.error}`;
+        mailItem2.price = '';
+        mailItem2.result = '';
+        mailItem2.shop = '';
+        mailItem2.vendor = '';
+        sendResults([mailItem2], excelFile.getName());
         return;
     }
     const gotLocationId = Date.now();
@@ -79,19 +78,18 @@ function processEmails() {
         }
         scriptProperties.deleteProperty('ROW');
         checkRow();
-        const mailItem = new MailItem(
-            'I dag',
-            0,
-            true,
-            true,
-            0,
-            `Fant ingen salg. Søndag?`,
-            0,
-            '',
-            '',
-            ''
-        );
-        sendResults([mailItem], excelFile.getName());
+        const mailItem3 = new MailItem();
+        mailItem3.date = 'I dag';
+        mailItem3.decrement = 0;
+        mailItem3.error = true;
+        mailItem3.processed = true;
+        mailItem3.foundInShopify  = true;
+        mailItem3.message = `Fant ingen salg. Søndag?`;
+        mailItem3.price = '';
+        mailItem3.result = '';
+        mailItem3.shop = '';
+        mailItem3.vendor = '';
+        sendResults([mailItem3], excelFile.getName());
         return
     }
 
@@ -120,21 +118,25 @@ function processEmails() {
                 handle
             );
 
-            const mailItem = new MailItem(
-                date = Math.floor(Date.now() / 1000) - 60 * 60 * 24, //Yesterday's sale, sec since 1970
-                decrement = Number.parseFloat(sale.decrement,10).toFixed(),
-                message = '\n\n' + 
-                    sale.vendor + ':  ' + 
-                    sale.name + 
-                    '  ----     Solgt: ' + Math.trunc(sale.decrement) + 
-                    '\nId: "' + handle + 
-                    ', farge: ' + sale.soldColor + 
-                    ', størrelse: ' + sale.size +
-                    ' EAN: ' + sale.ean,
-                price = Number.parseFloat(columns.prices[index] ? columns.prices[index]: '0.0',10).toFixed(),
-                shop = columns.shops[index],
-                vendor = sale.vendor,
-            );
+            const mailItem4 = new MailItem();
+            
+            mailItem4.date = Math.floor(Date.now() / 1000) - 60 * 60 * 24; //Yesterday's sale, sec since 1970
+            mailItem4.decrement = Number.parseFloat(sale.decrement,10).toFixed();
+            mailItem4.error = false;
+            mailItem4.processed = true;
+            mailItem4.foundInShopify  = true;
+            mailItem4.message = '\n\n' + 
+                sale.vendor + ':  ' + 
+                sale.name + 
+                '  ---->     Solgt: ' + Math.trunc(sale.decrement) + 
+                '\nID: "' + handle + 
+                ',    Farge: ' + sale.soldColor + 
+                ',    Størrelse: ' + sale.size +
+                ',\nEAN: ' + sale.ean;
+            mailItem4.price = Number.parseFloat(columns.prices[index] ? columns.prices[index]: '0.0',10).toFixed();
+            mailItem4.result = '';
+            mailItem4.shop = columns.shops[index];
+            mailItem4.vendor = sale.vendor;
 
             if (typeof handle !== 'undefined' && handle !== 'nohandle' && sale.decrement !== 0) {
                 const returnedMailItem = processSale(
@@ -143,22 +145,21 @@ function processEmails() {
                     sale.soldSize,
                     sale.soldColor,
                     sale.decrement,
-                    mailItem);
+                    mailItem4);
 
+                returnedMailItem.processed = true;
                 results.push(returnedMailItem);
             } else {
                 if (sale.decrement !== 0) {
                     console.log('No handle, could not process sale.');
-                    mailItem.result = 'Does not have a handle';
-                    mailItem.foundInShopify = false;
-                    mailItem.error = true;
+                    mailItem4.result = 'Does not have a handle';
+                    mailItem4.foundInShopify = false;
+                    mailItem4.error = true;
                 } else {
-                    mailItem.result = 'Decrement is 0';
-                    mailItem.foundInShopify = true;
-                    mailItem.error = false;
+                    mailItem4.result = 'Decrement is 0';
+                    mailItem4.error = false;
                 }
-                mailItem.unprocessed = true;
-                results.push(mailItem);
+                results.push(mailItem4);
             }
             //Should I stop now?
             if (index > runFromRow + 98) {

@@ -29,9 +29,9 @@ function sendResults(results, attachedFile) {
     })
     
     const foundAndOK = results.filter(item => 
-        item.foundInShopify && !item.error && !item.unprocessed);
+        item.foundInShopify && !item.error && item.processed);
     const notFound = results.filter(item => !item.foundInShopify);
-    const unprocessed = results.filter(item => item.unprocessed && !item.error);
+    const unprocessed = results.filter(item => !item.processed && !item.error);
 
     const errors = results.filter(item => {
         // Found in Shopify, but some other error occurred
