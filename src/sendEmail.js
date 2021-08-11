@@ -84,9 +84,9 @@ function sendResults(results, attachedFile) {
 
     body = body + "\n\n******* Hadde nedtelling 0 (Feilslag i kassen) ***************\n";
     body = body + unprocessedTexts;
-    body = body + "\n\n******* Kunne ikke finne disse i Shopify ***************\n";
+    body = body + "\n\n******* Ikke i Shopify ***************";
     body = body + missing;
-    body = body + "\n**********Andre feil ****************\n";
+    body = body + "\n\n********** Feil ****************\n";
     body = body + notOk;
 
     MailApp.sendEmail({

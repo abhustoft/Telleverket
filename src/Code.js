@@ -125,7 +125,7 @@ function processEmails() {
             mailItem4.error = false;
             mailItem4.processed = true;
             mailItem4.foundInShopify  = true;
-            mailItem4.message = '\n\n' + 
+            mailItem4.message = '\n' + 
                 sale.vendor + ':  ' + 
                 sale.name + 
                 '  ---->     Solgt: ' + Math.trunc(sale.decrement) + 
