@@ -28,7 +28,7 @@ function sendResults(results, attachedFile) {
         }
     })
     
-    const foundAndOK = results.filter(item => item.foundInShopify && !item.error && item.processed);
+    const foundAndOK = results.filter(item => item.foundInShopify && item.processed && !item.error && !item.noHandle);
     const notFound = results.filter(item => !item.foundInShopify);
     const noHandles = results.filter(item => item.noHandle);
     const unprocessed = results.filter(item => !item.processed && !item.error);
