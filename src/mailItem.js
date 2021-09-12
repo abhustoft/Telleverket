@@ -2,6 +2,7 @@ function MailItem(
     date = 0,
     decrement = 0,
     error = false,
+    noHandle = false,
     processed = false,
     foundInShopify = false,
     message = '',
@@ -13,6 +14,7 @@ function MailItem(
   this.date = date;
   this.decrement = decrement;
   this.error = error;
+  this.noHandle = noHandle;
   this.processed = processed;
   this.foundInShopify = foundInShopify;
   this.message = message;

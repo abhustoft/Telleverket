@@ -125,6 +125,7 @@ function processEmails() {
             mailItem4.error = false;
             mailItem4.processed = true;
             mailItem4.foundInShopify  = true;
+            
             mailItem4.message = '\n' + 
                 sale.vendor + ':  ' + 
                 sale.name + 
@@ -133,6 +134,7 @@ function processEmails() {
                 ',    Farge: ' + sale.soldColor + 
                 ',    Størrelse: ' + sale.size +
                 ',\nEAN: ' + sale.ean;
+            
             mailItem4.price = Number.parseFloat(columns.prices[index] ? columns.prices[index]: '0.0',10).toFixed();
             mailItem4.result = '';
             mailItem4.shop = columns.shops[index];
@@ -152,9 +154,10 @@ function processEmails() {
             } else {
                 if (sale.decrement !== 0) {
                     console.log('No handle, could not process sale.');
-                    mailItem4.result = 'Does not have a handle';
-                    mailItem4.foundInShopify = false;
-                    mailItem4.error = true;
+                    mailItem4.result = 'Har ikke handle i Datanova-filen, kan ikke spørre Shopify om produkt id';
+                    mailItem4.foundInShopify = true; // So it does not group in the not-found list
+                    mailItem4.error = false;
+                    mailItem4.noHandle = true;
                 } else {
                     mailItem4.result = 'Decrement is 0';
                     mailItem4.error = false;

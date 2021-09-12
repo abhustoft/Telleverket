@@ -5,7 +5,7 @@ function processSale(location_id, handle, size, color, decrement, mailItem) {
     const product_id = getProductId(handle);
     
     if (product_id === null) {
-        mailItem.result = 'Fant ikke denne i Shopify.';
+        mailItem.result = 'Fant ikke product id i Shopify.';
         mailItem.foundInShopify = false;
         mailItem.error = false;
         return mailItem;

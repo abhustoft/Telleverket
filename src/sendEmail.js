@@ -28,9 +28,9 @@ function sendResults(results, attachedFile) {
         }
     })
     
-    const foundAndOK = results.filter(item => 
-        item.foundInShopify && !item.error && item.processed);
+    const foundAndOK = results.filter(item => item.foundInShopify && !item.error && item.processed);
     const notFound = results.filter(item => !item.foundInShopify);
+    const noHandles = results.filter(item => item.noHandle);
     const unprocessed = results.filter(item => !item.processed && !item.error);
 
     const errors = results.filter(item => {
@@ -43,28 +43,12 @@ function sendResults(results, attachedFile) {
     });
 
     const ok = foundAndOK.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
-    const missing = notFound.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
+    const notFoundText = notFound.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
+    const noHandlesText = noHandles.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
     const unprocessedTexts = unprocessed.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
     const notOk = errors.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
     const soldItems = results.reduce((acc, curr) => acc + Number.parseInt(curr.decrement, 10), 0);
     const sum = results.reduce((acc, curr) => acc + Number.parseInt(curr.price, 10) * Number.parseInt(curr.decrement, 10), 0);
-
-    const sumSandvika = results.reduce((acc, curr, index, items) => {
-            if (items[index].shop.includes('andvika')) {
-                return acc + Number.parseInt(curr.itemPrice, 10) * Number.parseInt(curr.items, 10);
-            } else {
-                return acc;
-            }
-        }, 0
-    );
-    const sumStoro = results.reduce((acc, curr, index, items) => {
-            if (items[index].shop.includes('toro')) {
-                return acc + Number.parseInt(curr.itemPrice, 10) * Number.parseInt(curr.items, 10);
-            } else {
-                return acc;
-            }
-        }, 0
-    );
 
     let body = '';
     body = body + `Fra fil ${attachedFile}\n`;
@@ -72,21 +56,16 @@ function sendResults(results, attachedFile) {
         style: 'currency',
         currency: 'NOK'
     }).format(sum)}\n`
-    body = body + `\nFor Sandvika: ${new Intl.NumberFormat('no', {
-        style: 'currency',
-        currency: 'NOK'
-    }).format(sumSandvika)}`;
-    body = body + `\nFor Storo: ${new Intl.NumberFormat('no', {
-        style: 'currency',
-        currency: 'NOK'
-    }).format(sumStoro)}`;
+   
     body = body + ok;
 
     body = body + "\n\n******* Hadde nedtelling 0 (Feilslag i kassen) ***************\n";
     body = body + unprocessedTexts;
-    body = body + "\n\n******* Ikke i Shopify ***************";
-    body = body + missing;
-    body = body + "\n\n********** Feil ****************\n";
+    body = body + "\n\n******* Ikke Handle i Datanova-rapport fil ***************";
+    body = body + noHandlesText; 
+    body = body + "\n\n******* Har Handle, men fant ikke i Shopify ***************";
+    body = body + notFoundText;
+    body = body + "\n\n********** Fant i Shopify, men annen feil ****************\n";
     body = body + notOk;
 
     MailApp.sendEmail({
