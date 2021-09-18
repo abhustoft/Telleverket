@@ -140,7 +140,7 @@ function processEmails() {
             mailItem4.shop = columns.shops[index];
             mailItem4.vendor = sale.vendor;
 
-            if (typeof handle !== 'undefined' && handle !== 'nohandle' && sale.decrement !== 0) {
+            if (typeof handle !== 'undefined' && handle !== 'nohandle' && mailItem4.decrement !== '0') {
                 const returnedMailItem = processSale(
                     location_id,
                     handle,
@@ -159,7 +159,7 @@ function processEmails() {
                     mailItem4.error = false;
                     mailItem4.noHandle = true;
                 } else {
-                    mailItem4.result = 'Decrement is 0';
+                    mailItem4.result = 'Antall salg er 0, sikkert et feilslag i kassen';
                     mailItem4.error = false;
                 }
                 results.push(mailItem4);
