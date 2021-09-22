@@ -124,6 +124,7 @@ function processEmails() {
             mailItem4.decrement = Number.parseFloat(sale.decrement,10).toFixed();
             mailItem4.error = false;
             mailItem4.processed = true;
+            mailItem4.ean = sale.ean;
             mailItem4.foundInShopify  = true;
             
             mailItem4.message = '\n' + 

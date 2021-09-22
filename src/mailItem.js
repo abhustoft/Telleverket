@@ -4,6 +4,7 @@ function MailItem(
     error = false,
     noHandle = false,
     processed = false,
+    ean = 0,
     foundInShopify = false,
     message = '',
     price = 0,
@@ -16,6 +17,7 @@ function MailItem(
   this.error = error;
   this.noHandle = noHandle;
   this.processed = processed;
+  this.ean = ean;
   this.foundInShopify = foundInShopify;
   this.message = message;
   this.price = price;

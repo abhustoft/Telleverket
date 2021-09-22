@@ -28,10 +28,12 @@ function sendResults(results, attachedFile) {
         }
     })
     
-    const foundAndOK = results.filter(item => item.foundInShopify && item.processed && !item.error && !item.noHandle);
-    const notFound = results.filter(item => !item.foundInShopify);
-    const noHandles = results.filter(item => item.noHandle);
-    const unprocessed = results.filter(item => !item.processed && !item.error);
+    const foundAndOK  = results.filter(item => item.foundInShopify && item.processed && !item.error && !item.noHandle && item.decrement);
+    const notFound    = results.filter(item => !item.foundInShopify);
+    // Throw away silly Datanova 'sales' of vendor definition
+    const noHandles   = results.filter(item => item.noHandle && Number.parseInt(item.ean, 10) > 100);
+    const unprocessed = results.filter(item => !item.processed);
+    const zeros       = results.filter(item => !item.decrement);
 
     const errors = results.filter(item => {
         // Found in Shopify, but some other error occurred
@@ -42,11 +44,13 @@ function sendResults(results, attachedFile) {
         }
     });
 
-    const ok = foundAndOK.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
-    const notFoundText = notFound.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
-    const noHandlesText = noHandles.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
+    const okTexts = foundAndOK.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
+    const notFoundTexts = notFound.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
+    const noHandlesTexts = noHandles.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
     const unprocessedTexts = unprocessed.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
-    const notOk = errors.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
+    const zerosTexts = zeros.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
+    const errorsTexts = errors.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
+    
     const soldItems = results.reduce((acc, curr) => acc + Number.parseInt(curr.decrement, 10), 0);
     const sum = results.reduce((acc, curr) => acc + Number.parseInt(curr.price, 10) * Number.parseInt(curr.decrement, 10), 0);
 
@@ -57,16 +61,18 @@ function sendResults(results, attachedFile) {
         currency: 'NOK'
     }).format(sum)}\n`
    
-    body = body + ok;
+    body = body + okTexts;
 
     body = body + "\n\n******* Hadde nedtelling 0 (Feilslag i kassen) ***************\n";
-    body = body + unprocessedTexts;
+    body = body + zerosTexts;
     body = body + "\n\n******* Ikke Handle i Datanova-rapport fil ***************";
-    body = body + noHandlesText; 
+    body = body + noHandlesTexts; 
     body = body + "\n\n******* Har Handle, men fant ikke i Shopify ***************";
-    body = body + notFoundText;
+    body = body + notFoundTexts;
+    body = body + "\n\n********** Ingen feil, men ikke prossert ****************\n";
+    body = body + unprocessedTexts;
     body = body + "\n\n********** Fant i Shopify, men annen feil ****************\n";
-    body = body + notOk;
+    body = body + errorsTexts;
 
     MailApp.sendEmail({
         to: "abhustoft@gmail.com",
