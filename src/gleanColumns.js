@@ -42,6 +42,7 @@ function gleanColumns(fileDataResponse) {
   const handles = rawHandles.slice(firstHandle);
   const sizes = [...handles].map((empty) => "");
   const colors = [...handles].map((empty) => "");
+  const seasons = [...handles].map((empty) => "");
 
   const rawDecrements = decrementValues.values.map((decrement) => decrement[0]);
   const rawNames = nameValues.values.map((name) => name[0]);
@@ -59,6 +60,7 @@ function gleanColumns(fileDataResponse) {
         return "nohandle";
       }
       newHandle = handle.replace(/^.*@/, "");
+      seasons[index] = handle.replace(/&.*/, "");
       sizes[index] = justHandle.replace(/@.*$/, "");
       colors[index] = justHandle.replace(/^.*-(?!.*-)/, ""); // Last '-' from lookahead
     }
@@ -74,6 +76,7 @@ function gleanColumns(fileDataResponse) {
 
   return {
     colors: colors,
+    seasons: seasons,
     handles: cleanedHandles,
     names: names,
     eans: eans,

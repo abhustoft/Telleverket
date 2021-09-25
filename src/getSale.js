@@ -3,19 +3,15 @@ const getSale = (products, index) => {
     const soldSize = products.sizes[index] ? products.sizes[index].toLowerCase().replace(/\s/gi, '') : 'no size';
     const decrement = products.quantities[index] ? products.quantities[index] : '0';
     const size = products.sizes[index] ? products.sizes[index] : 'none';
+    const season = products.seasons[index] ? products.seasons[index] : 'none';
     const name = products.names[index] ? products.names[index]: 'none';
     const ean = products.eans[index] ? products.eans[index]: 'none';
-    let soldColor = '';
-    // if (products.names[index] === 'wheat') {
-    //     // TODO: Remove preceding digits for Wheat 2020Q34
-    //     soldColor = products.colors[index] ? products.colors[index].toLowerCase().replace(/\s/gi, '').replace(/^\d*/gi, ''): 'no color';
-    // } else {
-        soldColor =  products.colors[index] ? products.colors[index].toLowerCase().replace(/\s/gi, '') : 'no color';
-    // }
+    const soldColor =  products.colors[index] ? products.colors[index].toLowerCase().replace(/\s/gi, '') : 'no color';
 
     return {
         vendor: vendor,
         soldSize: soldSize,
+        season: season,
         soldColor: soldColor,
         decrement: decrement,
         size: size,

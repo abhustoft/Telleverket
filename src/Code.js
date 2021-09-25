@@ -134,7 +134,7 @@ function processEmails() {
                 '\nID: "' + handle + 
                 ',    Farge: ' + sale.soldColor + 
                 ',    Størrelse: ' + sale.size +
-                ',\nEAN: ' + sale.ean;
+                ',\nEAN: ' + sale.ean + ', Sesong: ', + sale.season;
             
             mailItem4.price = Number.parseFloat(columns.prices[index] ? columns.prices[index]: '0.0',10).toFixed();
             mailItem4.result = '';
