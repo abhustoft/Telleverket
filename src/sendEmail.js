@@ -28,21 +28,29 @@ function sendResults(results, attachedFile) {
         }
     })
     
-    const foundAndOK  = results.filter(item => item.foundInShopify && item.processed && !item.error && !item.noHandle && item.decrement);
+    const foundAndOK = results.filter((item) => {
+      return (
+        item.foundInShopify &&
+        item.processed &&
+        !item.error &&
+        !item.noHandle &&
+        item.decrement !== "0"
+      );
+    });
     const notFound    = results.filter(item => !item.foundInShopify);
     // Throw away silly Datanova 'sales' of vendor definition
     const noHandles   = results.filter(item => item.noHandle && Number.parseInt(item.ean, 10) > 100);
     const unprocessed = results.filter(item => !item.processed);
-    const zeros       = results.filter(item => !item.decrement);
+    const zeros       = results.filter(item => item.decrement === '0');
+    const errors      = results.filter(item => item.error);
 
-    const errors = results.filter(item => {
-        // Found in Shopify, but some other error occurred
-        if (item.error && item.foundInShopify) {
-            return item.message;
-        } else {
-            return false;
-        }
-    });
+    console.log(`Processed ${results.length} items:`)
+    console.log(`OKs: ${foundAndOK.length}`);
+    console.log(`No handles: ${noHandles.length}`);
+    console.log(`Unprocessed: ${unprocessed.length}`);
+    console.log(`Zero sales: ${zeros.length}`);
+    console.log(`Errors: ${erros.length}`);
+    console.log(`In all: ${results.length+foundAndOK.length+noHandles.length+unprocessed.length+zeros.length+erros.length}`);
 
     const okTexts = foundAndOK.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
     const notFoundTexts = notFound.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
