@@ -129,13 +129,12 @@ function processEmails() {
             mailItem4.foundInShopify  = true;
             
             mailItem4.message = '\n' + 
-                sale.vendor + ':  ' + 
                 sale.name + 
                 '  ---->     Solgt: ' + Math.trunc(sale.decrement) + 
                 '\nID: "' + handle + 
                 ',    Farge: ' + sale.soldColor + 
                 ',    Størrelse: ' + sale.size +
-                ',\nEAN: ' + sale.ean + `, Sesong: ${sale.season}`;
+                `,\n${sale.season} sesong.` + '       EAN: ' + sale.ean;
             
             mailItem4.price = Number.parseFloat(columns.prices[index] ? columns.prices[index]: '0.0',10).toFixed();
             mailItem4.result = '';
@@ -156,7 +155,7 @@ function processEmails() {
             } else {
                 if (mailItem4.decrement !== '0') {
                     console.log(`No handle, could not process sale of ${sale.decrement} sold items`);
-                    mailItem4.result = `Har ikke handle i Datanova-filen, kan ikke spørre Shopify om produkt id for salg av ${sale.decrement} plagg`;
+                    mailItem4.result = '';
                     mailItem4.foundInShopify = true; // So it does not group in the not-found list
                     mailItem4.error = false;
                     mailItem4.noHandle = true;
