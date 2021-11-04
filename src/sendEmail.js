@@ -64,32 +64,45 @@ function sendResults(results, attachedFile) {
     const soldItems = results.reduce((acc, curr) => acc + Number.parseInt(curr.decrement, 10), 0);
     const sum = results.reduce((acc, curr) => acc + Number.parseInt(curr.price, 10) * Number.parseInt(curr.decrement, 10), 0);
 
-    let body = '';
-    body = body + `Fra fil ${attachedFile}\n`;
-    body = body + `Solgte ${soldItems} varer i ${results.length} salg for tilsammen ${new Intl.NumberFormat('no', {
+    let bodyOK = '';
+    bodyOK = bodyOK + `Fra fil ${attachedFile}\n`;
+    bodyOK = bodyOK + `Solgte ${soldItems} varer i ${results.length} salg for tilsammen ${new Intl.NumberFormat('no', {
         style: 'currency',
         currency: 'NOK'
     }).format(sum)}\n`
    
-    body = body + okTexts;
+    bodyOK = bodyOK + okTexts;
 
-    body = body + "\n\n******* Hadde nedtelling 0 (Feilslag i kassen) ***************\n";
-    body = body + zerosTexts;
-    body = body + "\n\n******* Ikke Handle i Datanova-rapport fil ***************";
-    body = body + noHandlesTexts; 
-    body = body + "\n\n******* Gamle oppføringer ***************";
-    body = body + notFoundTextsOldies;
-    body = body + "\n\n******* Fant ikke i Shopify - FW21 ***************";
-    body = body + notFoundTextsNewItems;
-    body = body + "\n\n********** Ingen feil, men ikke prossert ****************\n";
-    body = body + unprocessedTexts;
-    body = body + "\n\n********** Fant i Shopify, men annen feil ****************\n";
-    body = body + errorsTexts;
+    bodyOK = bodyOK + "\n\n******* Hadde nedtelling 0 (Feilslag i kassen) ***************\n";
+    bodyOK = bodyOK + zerosTexts;
+    bodyOK = bodyOK + "\n\n******* Ikke Handle i Datanova-rapport fil ***************";
+    bodyOK = bodyOK + noHandlesTexts; 
+    bodyOK = bodyOK + "\n\n******* Gamle oppføringer ***************";
+    bodyOK = bodyOK + notFoundTextsOldies;
+
+
+    let bodyErrors = '';
+    bodyErrors = bodyErrors + "\n\n******* Fant ikke i Shopify - FW21 ***************";
+    bodyErrors = bodyErrors + notFoundTextsNewItems;
+    bodyErrors = bodyErrors + "\n\n********** Ingen feil, men ikke prossert ****************\n";
+    bodyErrors = bodyErrors + unprocessedTexts;
+    bodyErrors = bodyErrors + "\n\n********** Fant i Shopify, men annen feil ****************\n";
+    bodyErrors = bodyErrors + errorsTexts;
 
     MailApp.sendEmail({
         to: "abhustoft@gmail.com",
-        subject: "Shopify nedtelling av varelager " + emailQuotaRemaining,
-        body: body,
+        subject: "Shopify nedtellinger OK, " + emailQuotaRemaining,
+        body: bodyOK,
         noReply: true,
     });
+
+    console.log('Error lengths:', notFoundTextsNewItems.length, unprocessedTexts.length, errorsTexts.length);
+    if (notFoundTextsNewItems.length > 0 || unprocessedTexts.length > 0 || errorsTexts.length > 0) {
+      MailApp.sendEmail({
+        to: "abhustoft@gmail.com",
+        subject: "Shopify nedtellinger feil, " + emailQuotaRemaining,
+        body: bodyErrors,
+        noReply: true,
+      });
+    }
 }
