@@ -51,7 +51,7 @@ function sendResults(results, attachedFile) {
     console.log(`Unprocessed: ${unprocessed.length}`);
     console.log(`Zero sales: ${zeros.length}`);
     console.log(`Errors: ${errors.length}`);
-    console.log(`In all: ${results.length+foundAndOK.length+noHandles.length+unprocessed.length+zeros.length+errors.length}`);
+    console.log(`All errors: ${noHandles.length + unprocessed.length + zeros.length + errors.length}`);
 
     const okTexts = foundAndOK.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');
     const notFoundTextsOldies = notFoundOldies.reduce((acc, curr) => `${acc}\n${curr.message} \n${curr.result}`, '');

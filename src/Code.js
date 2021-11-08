@@ -80,8 +80,8 @@ function processEmails() {
         checkRow();
         const mailItem3 = new MailItem();
         mailItem3.date = 'I dag';
-        mailItem3.decrement = 0;
-        mailItem3.error = true;
+        mailItem3.decrement = 999;
+        mailItem3.error = false;
         mailItem3.processed = true;
         mailItem3.foundInShopify  = true;
         mailItem3.message = `Fant ingen salg. Søndag?`;
