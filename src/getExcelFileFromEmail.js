@@ -5,7 +5,7 @@ const getExcelFileFromEmail = () => {
         Logger.log("DatanovaSale label not found");
         return;
     }
-    
+
     const threads = datanovaSaleLabel.getThreads();
     const threadMessages = GmailApp.getMessagesForThreads(threads);
     Logger.log('Har %s stk threadMessages.', threadMessages.length);
@@ -14,7 +14,7 @@ const getExcelFileFromEmail = () => {
     if (threadMessage) {
         Logger.log('Har %s stk threadMessage.', threadMessage.length);
     } else {
-        console.log('threadMessage er tomt');
+        Logger.log('threadMessage er tomt');
         return {excelFile: null, threads: null, datanovaSaleLabel: null};
     }
     const message = threadMessage[0];

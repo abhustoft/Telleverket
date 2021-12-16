@@ -68,7 +68,7 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
 
         if (variantSize === size && variantColor === color) {
             // Found the variant in Shopify!
-            mailItem.result = `MATCH ${handle} variant no ${index}: Size ${variantSize} and color ${variantColor}`;
+            mailItem.result = `MATCHED ${handle} variant no ${index}: Size ${variantSize} and color ${variantColor}`;
             mailItem.error = false;
             mailItem.foundInShopify = true;
             matchedVariant = {
@@ -79,7 +79,7 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
                 color: color,
                 decrement: decrement,
             };
-            console.log('MATCH ', handle, ' variant no', index, ': Size', variantSize, ' and color ', variantColor);
+            console.log('MATCHED ', handle, ' variant no', index, ': Size', variantSize, ' and color ', variantColor);
             return false;
         } else {
             console.log('No match for ', handle, ' variant no ', index, ': Size', variantSize, ' and color ', variantColor);

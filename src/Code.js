@@ -24,7 +24,7 @@ function processEmails() {
     const start = Date.now();
     scriptProperties.setProperty('StartedRunning', start);
     const emailQuotaRemaining = MailApp.getRemainingDailyQuota();
-    
+
     if (emailQuotaRemaining < 9) {
         console.log(`Email quota remaining is ${emailQuotaRemaining}, so skip this run.`);
         const mailItem1 = new MailItem();
@@ -99,20 +99,20 @@ function processEmails() {
 
     if (runFromRow < columns.shops.length) {
 
-        for (let index = runFromRow; index < columns.shops.length; index++) {
-            lastRow = index;
+        for (let rowNo = runFromRow; rowNo < columns.shops.length; rowNo++) {
+            lastRow = rowNo;
             isFinished = false;
-            const handle = columns.handles[index];
-            const sale = getSale(columns, index);
+            const handle = columns.handles[rowNo];
+            const sale = getSale(columns, rowNo);
             console.log(
-                'Running row index:',
-                index,
-                ' Vendor: ',
+                'Running row ',
+                rowNo,
+                '. Vendor: ',
                 sale.vendor,
                 ' Item: ',
-                columns.names[index],
+                columns.names[rowNo],
                 ', price: ' +
-                columns.prices[index] ? columns.prices[index] : 'unknown',
+                columns.prices[rowNo] ? columns.prices[rowNo] : 'unknown',
                 ' * ',
                 sale.decrement,
                 ' with handle: ',
@@ -138,9 +138,9 @@ function processEmails() {
                 ',    Størrelse: ' + sale.size +
                 `,\n${sale.season} sesong.` + '       EAN: ' + sale.ean;
             
-            mailItem4.price = Number.parseFloat(columns.prices[index] ? columns.prices[index]: '0.0',10).toFixed();
+            mailItem4.price = Number.parseFloat(columns.prices[rowNo] ? columns.prices[rowNo]: '0.0',10).toFixed();
             mailItem4.result = '';
-            mailItem4.shop = columns.shops[index];
+            mailItem4.shop = columns.shops[rowNo];
             mailItem4.vendor = sale.vendor;
 
             if (typeof handle !== 'undefined' && handle !== 'nohandle' && mailItem4.decrement !== '0') {
@@ -168,9 +168,9 @@ function processEmails() {
                 results.push(mailItem4);
             }
             //Should I stop now?
-            if (index > runFromRow + 98) {
-                console.log('Breaking at row index:  ', index);
-                scriptProperties.setProperty('ROW', index.toString());
+            if (rowNo > runFromRow + 50) {
+                console.log('Breaking at row index:  ', rowNo);
+                scriptProperties.setProperty('ROW', rowNo.toString());
                 checkRow();
                 break;
             } else {
