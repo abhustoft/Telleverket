@@ -2,10 +2,10 @@ function processSale(location_id, handle, size, color, decrement, mailItem) {
     const msBetweenCalls = 2000;
 
     let startCall = Date.now();
-    const product_id = getProductId(handle);
+    const product_id = getProductId(handle, size, color, decrement);
     
     if (product_id === null) {
-        mailItem.result = 'Fant ikke product id i Shopify.';
+        mailItem.result = 'Fant ikke product id i Shopify for ' + handle + ' med ' + size + ' ' + color + ' ' + decrement;
         mailItem.foundInShopify = false;
         mailItem.error = false;
         return mailItem;

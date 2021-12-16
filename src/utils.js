@@ -1,4 +1,4 @@
-const getProductId = handle => {
+const getProductId = (handle, size, color, decrement) => {
     const getByHandle = `https://juniorbarneklar.myshopify.com/admin/api/2020-07/products.json?handle=${handle}`;
     const resp3 = UrlFetchApp.fetch(getByHandle, {
         method: 'GET',
@@ -13,7 +13,7 @@ const getProductId = handle => {
     var product = JSON.parse(resp3.getContentText());
 
     if (!product.products || product.products.length === 0) {
-        console.log('Product Id for handle: ', handle, ' NOT FOUND')
+        console.log('Product Id for handle: ', handle, ' size', size, ' color', color, 'decrement ', decrement, ' NOT FOUND')
         return null;
     } else {
         console.log("Product Id for handle: ", handle, ' is ', product.products[0].id);
