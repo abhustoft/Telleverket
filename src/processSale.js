@@ -1,5 +1,5 @@
 function processSale(location_id, handle, size, color, decrement, mailItem) {
-    const msBetweenCalls = 600;
+    const msBetweenCalls = 2000;
 
     let startCall = Date.now();
     const product_id = getProductId(handle);

@@ -24,6 +24,7 @@ function processEmails() {
     const start = Date.now();
     scriptProperties.setProperty('StartedRunning', start);
     const emailQuotaRemaining = MailApp.getRemainingDailyQuota();
+    
     if (emailQuotaRemaining < 9) {
         console.log(`Email quota remaining is ${emailQuotaRemaining}, so skip this run.`);
         const mailItem1 = new MailItem();

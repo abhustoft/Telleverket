@@ -37,9 +37,9 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
 
     const theHandles = JSON.parse(response.getContentText());
     if (!theHandles) {
-        mailItem.result = 'Kunne ikke finne varianter for handle';
+        mailItem.result = 'Kunne ikke finne varianter for handle ' + handle;
         mailItem.error = true;
-        console.log('Kunne ikke finne varianter for handle');
+        console.log('Kunne ikke finne varianter for handle ' + handle);
         return matchedVariant;
     }
     if (theHandles.errors) {
@@ -60,15 +60,15 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
         if (variant.option2) {
             variantColor = variant.option2.toLowerCase().replace(regex, '');
         } else {
-            mailItem.result = 'Variant error: the variant', variant, '  has no color ';
+            mailItem.result = 'Variant error: the ' + handle + 'variant', variant, '  has no color ';
             mailItem.error = true;
-            console.log('Variant error: the variant', variant, '  has no color ');
+            console.log('Variant error: the ' + handle + 'variant', variant, '  has no color ');
             return true;
         }
 
         if (variantSize === size && variantColor === color) {
             // Found the variant in Shopify!
-            mailItem.result = `MATCH variant no ${index}: Size ${variantSize} and color ${variantColor}`;
+            mailItem.result = `MATCH ${handle} variant no ${index}: Size ${variantSize} and color ${variantColor}`;
             mailItem.error = false;
             mailItem.foundInShopify = true;
             matchedVariant = {
@@ -79,10 +79,10 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
                 color: color,
                 decrement: decrement,
             };
-            console.log('MATCH variant no', index, ': Size', variantSize, ' and color ', variantColor);
+            console.log('MATCH ', handle, ' variant no', index, ': Size', variantSize, ' and color ', variantColor);
             return false;
         } else {
-            console.log('No match for variant no ', index, ': Size', variantSize, ' and color ', variantColor);
+            console.log('No match for ', handle, ' variant no ', index, ': Size', variantSize, ' and color ', variantColor);
         }
         return true;
     });
@@ -101,7 +101,7 @@ const getItemVariants = (product_id, handle, size, color, decrement, mailItem) =
             decrement: ''
         };
 
-        mailItem.result = 'Fant denne i Shopify, men fant ingen varianter for: ' + titles;
+        mailItem.result = 'Fant denne, ' + handle + ', i Shopify, men fant ingen varianter for: ' + titles;
         mailItem.error = true;
     }
 
