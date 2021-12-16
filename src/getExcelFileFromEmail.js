@@ -1,5 +1,11 @@
 const getExcelFileFromEmail = () => {
     const datanovaSaleLabel = GmailApp.getUserLabelByName("DatanovaSale");
+
+    if (!datanovaSaleLabel) {
+        Logger.log("DatanovaSale label not found");
+        return;
+    }
+    
     const threads = datanovaSaleLabel.getThreads();
     const threadMessages = GmailApp.getMessagesForThreads(threads);
     Logger.log('Har %s stk threadMessages.', threadMessages.length);
