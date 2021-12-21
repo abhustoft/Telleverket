@@ -168,7 +168,7 @@ function processEmails() {
                 results.push(mailItem4);
             }
             //Should I stop now?
-            if (rowNo > runFromRow + 30) {
+            if (rowNo > runFromRow + 70) {
                 console.log('Breaking at row index:  ', rowNo);
                 scriptProperties.setProperty('ROW', rowNo.toString());
                 checkRow();
