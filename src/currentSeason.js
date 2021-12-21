@@ -1,3 +1,3 @@
 function currentSeason() {
-  return 'FW21';
+  return 'SS22';
 }
