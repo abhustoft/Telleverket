@@ -197,7 +197,7 @@ function processEmails() {
                 .timeBased()
                 .after(10 * 60 * 1000)
                 .create();
-            console.log('Set up trigger at: ', Date(), ' + 10 min');
+            console.log('Set up trigger at: ', Date(), ' + 10 min' + ' ' + tenMinTrigger.getUniqueId());
             checkRow();
         }
         const updatingLabels = Date.now();
