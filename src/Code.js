@@ -209,6 +209,7 @@ function processEmails() {
         const msUpdatingLabels = updatingLabels - decrementingLoop;
         const msSending = sending - updatingLabels;
         const msTotal = Date.now() - start;
+        const totalTime = Math.floor(msTotal / 1000);
 
         console.log(`Getting locationId took ${Math.floor(msGotLocationId / 1000)} seconds`);
         console.log(`Getting Excel file took another ${Math.floor(msGotExcelFile / 1000)} seconds`);
@@ -216,7 +217,17 @@ function processEmails() {
         console.log(`Time per item: ${Number.parseFloat(msDecrementingLoop / 1000 / columns.shops.length).toFixed(2)}`)
         console.log(`Updating labels took another ${Math.floor(msUpdatingLabels / 1000)} seconds`);
         console.log(`Sending email took another = ${Math.floor(msSending / 1000)} seconds`);
-        console.log(`Total time = ${Math.floor(msTotal / 1000)} seconds`);
+        console.log(`Total time = ${totalTime} seconds`);
+
+        if (totalTime > 300) {
+            MailApp.sendEmail({
+                to: "abhustoft@gmail.com",
+                subject: "Telleverk tid på grensen: " + totalTime + " sekunder - maks er 360 sekunder",
+                body: "På linje nummer " + rowNo + " i fil " + excelFile.getName() + "\n Fra linje " + runFromRow, 
+                noReply: true,
+                name: "Telleverket"
+              }); 
+        }
     } else {
         console.log('Bug using row number, stored row is higher than available rows! Delete stored row number and clean up.');
         datanovaSaleLabel.removeFromThreads(threads);
