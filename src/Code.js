@@ -193,11 +193,11 @@ function processEmails() {
         } else {
             scriptProperties.setProperty('ROW', lastRow.toString());
             console.log('Broke row loop, isFinished: ', isFinished, ' Last row: ', lastRow, ' Processed ', results.length, ' lines');
-            const tenMinTrigger = ScriptApp.newTrigger("processEmails")
-                .timeBased()
-                .after(10 * 60 * 1000)
-                .create();
-            console.log('Set up trigger at: ', Date(), ' + 10 min' + ' ' + tenMinTrigger.getUniqueId());
+            // const tenMinTrigger = ScriptApp.newTrigger("processEmails")
+            //     .timeBased()
+            //     .after(10 * 60 * 1000)
+            //     .create();
+            console.log('No new trigger');
             checkRow();
         }
         const updatingLabels = Date.now();

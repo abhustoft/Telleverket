@@ -82,7 +82,7 @@ function sendResults(results, attachedFile) {
 
 
     let bodyErrors = '';
-    bodyErrors = bodyErrors + "\n\n******* Fant ikke i Shopify - FW21 ***************";
+    bodyErrors = bodyErrors + "\n\n******* Fant ikke i Shopify - SS22 ***************";
     bodyErrors = bodyErrors + notFoundTextsNewItems;
     bodyErrors = bodyErrors + "\n\n********** Ingen feil, men ikke prossert ****************\n";
     bodyErrors = bodyErrors + unprocessedTexts;
