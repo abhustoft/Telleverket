@@ -14,7 +14,7 @@ const getExcelFileFromEmail = () => {
     if (threadMessage) {
         Logger.log('Har %s stk threadMessage.', threadMessage.length);
     } else {
-        Logger.log('threadMessage er tomt');
+        Logger.log('Ingen email med Datanova label.');
         return {excelFile: null, threads: null, datanovaSaleLabel: null};
     }
     const message = threadMessage[0];
