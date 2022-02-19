@@ -65,6 +65,18 @@ function processEmails() {
    
     const columns = getMyColumns(excelFile);
     if (!columns) {
+        const mailItem2 = new MailItem();
+        mailItem2.date = 'I dag';
+        mailItem2.decrement = 0;
+        mailItem2.error = true;
+        mailItem2.processed = true;
+        mailItem2.foundInShopify  = true;
+        mailItem2.message = `Kunne ikke lese excel-filen.`;
+        mailItem2.price = '';
+        mailItem2.result = '';
+        mailItem2.shop = '';
+        mailItem2.vendor = '';
+        sendResults([mailItem2], excelFile.getName());
         return;
     }
 
